@@ -20,6 +20,7 @@ public:
     std::string getName() const {return Name;};
     std::string getPersonalId() const {return PersonalId;};
     std::string getPhoneNumber() const {return PhoneNumber;};
+    friend void ResetPersonalInfo(PersonalInfo& personal); // 重置个人信息
 private:
     std::string Name;
     std::string PersonalId;
@@ -31,19 +32,18 @@ private:
 class HotelSubscription : public PersonalInfo
 {
 public:
-    HotelSubscription() : PersonalInfo(),roomNumber(0),roomType(0),roomPrice(0),roomCount(0){}
+    HotelSubscription() : PersonalInfo(),roomNumber(0),roomType(0),roomCount(0){}
     ~HotelSubscription(){}
-    void InitHotelSubInfo(int roomNumber , int roomType , int roomPrice , int roomCount , int totalPrice); // 订房信息
+    void InitHotelSubInfo(int roomNumber , int roomType , int roomCount , int totalPrice); // 订房信息
     void SetHotelSubInfo(int Info);
+    friend void ResetHotelSubInfo(HotelSubscription& hotel); // 重置订房信息
     int getRoomNumber() const {return roomNumber;};
     int getRoomType() const {return roomType;};
-    int getRoomPrice() const {return roomPrice;};
     int getRoomCount() const {return roomCount;};
     int getTotalPrice() const {return totalPrice;};
 private:
     int roomNumber;
     int roomType;
-    int roomPrice;
     int roomCount;
     int totalPrice;
 };
@@ -61,7 +61,9 @@ public:
     void SetRoomOtherStatus(int status);
     bool getCleanStatus() const {return CleanStatus;};
     bool getSubStatus() const {return SubStatus;};
-    friend std::string* GetRoomInfo(RoomInfo& room); // 获取房间信息
+    std::string getSubStartTime() const {return SubStartTime;};
+    std::string getSubEndTime() const {return SubEndTime;};
+    friend void ResetRoomInfo(RoomInfo& room); // 重置房间信息
 private:
     std::string SubStartTime;
     std::string SubEndTime;

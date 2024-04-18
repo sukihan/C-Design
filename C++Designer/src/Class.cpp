@@ -1,4 +1,5 @@
 #include "Class.h"
+#include "FuncOfRoom.h"
 
 using namespace std;
 
@@ -79,22 +80,22 @@ void PersonalInfo::SetPersonalInfo(int Info)
 }
 
 // 初始化订房信息
-void HotelSubscription::InitHotelSubInfo(int roomNumber , int roomType , int roomPrice , int roomCount , int totalPrice)
+void HotelSubscription::InitHotelSubInfo(int roomNumber , int roomType , int roomCount , int totalPrice)
 {
-    if (roomNumber == 0 || roomType == 0 || roomPrice == 0 || roomCount == 0 || totalPrice == 0)
+    if (roomNumber == 0 || roomType == 0 || roomCount == 0 || totalPrice == 0)
     {
         cout << "订房信息不能为空!" << endl;
         return;
     }
     this -> roomNumber = roomNumber;
     this -> roomType = roomType;
-    this -> roomPrice = roomPrice;
     this -> roomCount = roomCount;
     this -> totalPrice = totalPrice;
     cout << "订房信息初始化成功!" << endl;
 }
 
 // 设置订房信息
+
 void HotelSubscription::SetHotelSubInfo(int Info)
 {
     if (Info == 1)
@@ -131,22 +132,6 @@ void HotelSubscription::SetHotelSubInfo(int Info)
     }
     else if (Info == 3)
     {
-        cout << "重新输入房间价格: " << endl;
-        cin >> this -> roomPrice;
-        int OldRoomPrice = this -> roomPrice;
-        if (roomPrice == 0)
-        {
-            cout << "房间价格不能为空!" << endl;
-            return;
-        }
-        else if (roomPrice == OldRoomPrice)
-        {
-            cout << "房间价格不应与旧的一致！" << endl;
-            return;
-        }
-    }
-    else if (Info == 4)
-    {
         cout << "重新输入房间数量: " << endl;
         cin >> this -> roomCount;
         int OldRoomCount = this -> roomCount;
@@ -160,6 +145,7 @@ void HotelSubscription::SetHotelSubInfo(int Info)
             cout << "房间数量不应与旧的一致！" << endl;
             return;
         }
+        this->totalPrice = CalculatePrice(roomType , roomCount);
     }
     else if (Info == 5)
     {
@@ -178,6 +164,7 @@ void HotelSubscription::SetHotelSubInfo(int Info)
         }
     }
 }
+
 // 初始化房间信息
 void RoomInfo::InitRoomStatus(std::string subStartTime , std::string subEndTime)
 {
@@ -269,35 +256,28 @@ void RoomInfo::SetRoomOtherStatus(int status)
     }
 }
 
-// 获取房间信息
-std::string* GetRoomInfo(RoomInfo& room)
+// 重置订房信息
+void ResetHotelSubInfo(HotelSubscription& hotel)
 {
-    std::string* RoomInfo = new std::string[15];
-    RoomInfo[0] = room.SubStatus ? "已订房" : "未订房";
-    if (room.SubStatus == true)
-    {
-        RoomInfo[1] = room.getName();
-        RoomInfo[2] = room.getPersonalId();
-        RoomInfo[3] = room.getPhoneNumber();
-        RoomInfo[4] = to_string(room.getRoomNumber());
-        RoomInfo[5] = to_string(room.getRoomType());
-        RoomInfo[6] = to_string(room.getRoomPrice());
-        RoomInfo[7] = to_string(room.getRoomCount());
-        RoomInfo[8] = to_string(room.getTotalPrice());
-        RoomInfo[9] = room.SubStartTime;
-        RoomInfo[10] = room.SubEndTime;        
-    }else if (room.SubStatus == false)
-    {
-        RoomInfo[1] = "NULL";
-        RoomInfo[2] = "NULL";
-        RoomInfo[3] = "NULL";
-        RoomInfo[4] = to_string(room.getRoomNumber());
-        RoomInfo[5] = to_string(room.getRoomType());
-        RoomInfo[6] = to_string(room.getRoomPrice());
-        RoomInfo[7] = "NULL";
-        RoomInfo[8] = "NULL";
-        RoomInfo[9] = "NULL";
-        RoomInfo[10] = "NULL";
-    }
-    return RoomInfo;
+    hotel.roomNumber = 0;
+    hotel.roomType = 0;
+    hotel.roomCount = 0;
+    hotel.totalPrice = 0;
+}
+
+// 重置房间信息
+void ResetRoomInfo(RoomInfo& room)
+{
+    room.SubStartTime = "NULL";
+    room.SubEndTime = "NULL";
+    room.CleanStatus = true;
+    room.SubStatus = false;
+}
+
+// 重置个人信息
+void ResetPersonalInfo(PersonalInfo& personal)
+{
+    personal.Name = "NULL";
+    personal.PersonalId = "NULL";
+    personal.PhoneNumber = "NULL";
 }
